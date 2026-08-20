@@ -55,7 +55,7 @@ const greetNudgePrompt = `[The person just opened their diary and has not spoken
 const finishNudgePrompt = `[The person wants to finish, but the entry still has no %s. Warmly acknowledge they are ready to go, but ask for what is missing in one short sentence. Offer a value they only have to confirm, keeping the conversation open until they reply.]`
 
 func finishNudge(missing []string) string {
-	return fmt.Sprintf(finishNudgePrompt, missing[0])
+	return fmt.Sprintf(finishNudgePrompt, strings.Join(missing, " and no "))
 }
 
 func companionPrompt(now time.Time) string {

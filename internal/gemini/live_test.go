@@ -133,6 +133,7 @@ func TestLive_WalksThroughTheWholeDayAndWritesItDown(t *testing.T) {
 	s := speaks(t, time.Date(2026, time.August, 20, 21, 30, 0, 0, time.UTC))
 
 	var got []conversation.CallKind
+	var spoke int
 	for _, line := range []string{
 		"My day is great.",
 		"The weather. It's perfect weather right now.",
@@ -143,12 +144,13 @@ func TestLive_WalksThroughTheWholeDayAndWritesItDown(t *testing.T) {
 		"I would say a solid five.",
 		"Warm.",
 	} {
-		_, calls := turn(t, s, line, nil)
+		said, calls := turn(t, s, line, nil)
+		spoke += len(strings.Fields(said))
 		for _, call := range calls {
 			got = append(got, call.Kind)
 		}
 	}
-	t.Logf("recorded: %v", got)
+	t.Logf("recorded: %v  spoke: %d words", got, spoke)
 
 	for _, want := range []conversation.CallKind{
 		conversation.CallWentWell, conversation.CallWentBadly, conversation.CallTodo,
@@ -157,3 +159,26 @@ func TestLive_WalksThroughTheWholeDayAndWritesItDown(t *testing.T) {
 		assert.Contains(t, got, want, "they said it plainly and it never reached the entry")
 	}
 }
+
+func TestLive_KeepsTheMachineryOutOfWhatItSays(t *testing.T) {
+	s := speaks(t, time.Date(2026, time.August, 20, 21, 30, 0, 0, time.UTC))
+
+	turn(t, s, "Today was fine, nothing much happened.", nil)
+
+	refuse := func(call conversation.Call) string {
+		if call.Kind == conversation.CallRating && (call.Rating < 1 || call.Rating > 10) {
+			return offScale
+		}
+		return ""
+	}
+	said, _ := turn(t, s, "Let's say fifteen out of ten.", refuse)
+	rest, _ := turn(t, s, "Emotional, I suppose.", refuse)
+
+	for _, heard := range []string{said, rest} {
+		assert.NotContains(t, heard, "[", "a bracket is the app-note marker, and notes are not read aloud: %q", heard)
+		assert.NotContains(t, heard, "]", "a bracket is the app-note marker, and notes are not read aloud: %q", heard)
+		assert.NotContains(t, strings.ToLower(heard), "system", "the person is not told about the machinery: %q", heard)
+	}
+}
+
+const offScale = "a day is rated from 1 to 10 and that was not, so nothing was recorded. Ask them for a number in that range."

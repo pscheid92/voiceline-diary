@@ -304,9 +304,7 @@ func TestLiveSession_AsksForWhatTheDayStillOwes(t *testing.T) {
 	require.NoError(t, s.AskFor(context.Background(), []string{"rating", "emotion"}))
 
 	require.Len(t, c.sent(), 1)
-	assert.Contains(t, c.sent()[0].Text, "no rating")
-	assert.NotContains(t, c.sent()[0].Text, "emotion",
-		"one thing at a time is the rule the prompt sets, and this is what carries it")
+	assert.Contains(t, c.sent()[0].Text, "no rating and no emotion")
 }
 
 func TestLiveSession_EndsTheTurnOnDemand(t *testing.T) {

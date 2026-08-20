@@ -111,8 +111,7 @@ func TestSession_TheCompanionCannotEndAnIncompleteDay(t *testing.T) {
 	require.Len(t, refused, 1, "a goodbye over an unfinished day is refused")
 	assert.Equal(t, conversation.CallFinish, refused[0].call.Kind)
 	assert.Contains(t, refused[0].refusal, "rating")
-	assert.NotContains(t, refused[0].refusal, "emotion",
-		"a day owing both is asked for one of them; the other comes after it is answered")
+	assert.Contains(t, refused[0].refusal, "emotion")
 
 	assert.Empty(t, told[Concluded](c), "the conversation is still going")
 	assert.NotEmpty(t, told[Asking](c), "and the person is told why")

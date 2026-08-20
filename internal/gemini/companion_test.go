@@ -34,9 +34,8 @@ func TestPrompt_LeavesNoPlaceholderUnfilled(t *testing.T) {
 
 func TestFinishNudge_NamesWhatIsMissing(t *testing.T) {
 	nudge := finishNudge([]string{"rating", "emotion"})
-	assert.Contains(t, nudge, "no rating")
-	assert.NotContains(t, nudge, "emotion",
-		"the prompt forbids asking for both in one breath, so the nudge names one")
+	assert.Contains(t, nudge, "no rating and no emotion",
+		"the companion is told everything the day still owes, so it can plan the close")
 	assert.True(t, len(nudge) > 2 && nudge[0] == '[' && nudge[len(nudge)-1] == ']', "an app note must be bracketed, or the companion reads it aloud: %q", nudge)
 }
 

@@ -99,7 +99,7 @@ func (s *Session) noteRating(ctx context.Context, rating int) string {
 func (s *Session) noteEmotion(ctx context.Context, emotion string) string {
 	emotion = strings.TrimSpace(emotion)
 	if emotion == "" {
-		return "no mood was given, so nothing was recorded."
+		return "not recorded: no mood was given"
 	}
 
 	s.day.Emotion = emotion
@@ -130,7 +130,7 @@ func (s *Session) noteTodo(ctx context.Context, item string) string {
 func (s *Session) jot(ctx context.Context, held *[]string, item string) string {
 	item = strings.TrimSpace(item)
 	if item == "" {
-		return "nothing was said to record."
+		return "not recorded: nothing was said"
 	}
 
 	*held = append(*held, item)
@@ -140,7 +140,7 @@ func (s *Session) jot(ctx context.Context, held *[]string, item string) string {
 
 func noRoomFor(what, item string) string {
 	return fmt.Sprintf(
-		"a day holds at most %d %s and already has that many, so %q was not recorded.",
+		"not recorded: a day holds at most %d %s and already has that many, so %q did not fit",
 		diary.MaxListItems,
 		what,
 		item,

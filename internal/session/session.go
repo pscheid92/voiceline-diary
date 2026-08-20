@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -183,7 +184,7 @@ func (s *Session) settle(ctx context.Context, call conversation.Call) (refusal s
 }
 
 func owed(missing []string) string {
-	return fmt.Sprintf("the entry still has no %s. Ask them for that one thing before saying goodbye.", missing[0])
+	return fmt.Sprintf("not ended: the entry still has no %s", strings.Join(missing, " and no "))
 }
 
 func (s *Session) obey(ctx context.Context, cmd Command) Ending {
