@@ -17,5 +17,5 @@ node_modules/
 # OS
 .DS_Store
 
-# web/frontend/dist is committed on purpose: go:embed serves it, so the
-# reviewer needs no node toolchain to run the app.
+web/frontend/dist/*
+!web/frontend/dist/.gitkeep
