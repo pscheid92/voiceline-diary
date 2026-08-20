@@ -13,6 +13,7 @@ build: build-frontend build-go
 
 build-frontend:
 	cd web/frontend && npm ci && npm run build
+	touch web/frontend/dist/.gitkeep
 
 build-go:
 	CGO_ENABLED=0 go build -o bin/voiceline-diary .

@@ -181,12 +181,13 @@ describe('useVoiceSession', () => {
     expect(result.current.status).toBe('talking')
   })
 
-  it('opens the socket at the moment this browser says it is', async () => {
+  it("opens the socket on this browser's clock, offset and all", async () => {
     await talking()
 
     const [client] = server.server.clients()
     const now = new URL(client.url).searchParams.get('now')
     expect(now).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/)
+    expect(now).not.toMatch(/Z$/)
   })
 
   it('stops the companion hearing or answering while paused', async () => {

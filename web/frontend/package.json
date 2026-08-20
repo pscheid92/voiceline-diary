@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "TZ=Europe/Berlin vitest run",
+    "test:watch": "TZ=Europe/Berlin vitest"
   },
   "dependencies": {
     "date-fns": "^4.4.0",
