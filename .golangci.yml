@@ -1,0 +1,58 @@
+version: "2"
+run:
+  timeout: 5m
+linters:
+  enable:
+    - depguard
+    - errcheck
+    - govet
+    - staticcheck
+    - unused
+    - ineffassign
+  settings:
+    depguard:
+      rules:
+        product:
+          files:
+            - "**/internal/diary/**"
+            - "**/internal/conversation/**"
+            - "**/internal/session/**"
+          deny:
+            - pkg: github.com/pscheid92/voiceline-diary/internal/gemini
+              desc: the product must not name a provider
+            - pkg: github.com/pscheid92/voiceline-diary/internal/notion
+              desc: the product must not name a provider
+            - pkg: github.com/pscheid92/voiceline-diary/internal/router
+              desc: the product must not name a transport
+            - pkg: github.com/pscheid92/voiceline-diary/internal/wire
+              desc: the product must not name a transport
+        adapters:
+          files:
+            - "**/internal/wire/**"
+          deny:
+            - pkg: github.com/pscheid92/voiceline-diary/internal/gemini
+              desc: an adapter must not name a provider
+            - pkg: github.com/pscheid92/voiceline-diary/internal/notion
+              desc: an adapter must not name a provider
+            - pkg: github.com/pscheid92/voiceline-diary/internal/router
+              desc: one endpoint does not get to know how it is mounted
+        vendor-clients:
+          files:
+            - "**/internal/gemini/**"
+            - "**/internal/notion/**"
+          deny:
+            - pkg: github.com/pscheid92/voiceline-diary/internal/session
+              desc: a vendor client speaks diary and conversation, not the loop
+            - pkg: github.com/pscheid92/voiceline-diary/internal/wire
+              desc: a vendor client speaks diary and conversation, not the socket
+        credentials:
+          files:
+            - "**/internal/**"
+          deny:
+            - pkg: github.com/pscheid92/voiceline-diary/internal/config
+              desc: only the composition root reads credentials
+  exclusions:
+    rules:
+      - path: _test\.go
+        linters:
+          - errcheck

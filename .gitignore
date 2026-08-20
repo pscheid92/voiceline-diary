@@ -1,0 +1,21 @@
+# Go
+bin/
+coverage.out
+
+# Node
+node_modules/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+
+# web/frontend/dist is committed on purpose: go:embed serves it, so the
+# reviewer needs no node toolchain to run the app.

@@ -1,0 +1,50 @@
+all: false
+template: testify
+
+packages:
+  github.com/pscheid92/voiceline-diary/internal/session:
+    interfaces:
+      Diary:
+        configs:
+          - dir: internal/session
+            pkgname: session
+            filename: mocks_diary_test.go
+            structname: mockDiary
+          - dir: internal/wire
+            pkgname: wire
+            filename: mocks_diary_test.go
+            structname: mockDiary
+      Companion:
+        configs:
+          - dir: internal/session
+            pkgname: session
+            filename: mocks_companion_test.go
+            structname: mockCompanion
+          - dir: internal/wire
+            pkgname: wire
+            filename: mocks_companion_test.go
+            structname: mockCompanion
+      User:
+        config:
+          dir: internal/session
+          pkgname: session
+          filename: mocks_user_test.go
+          structname: mockUser
+
+  github.com/pscheid92/voiceline-diary/internal/gemini:
+    interfaces:
+      connection:
+        config:
+          dir: internal/gemini
+          pkgname: gemini
+          filename: mocks_connection_test.go
+          structname: mockConnection
+
+  github.com/pscheid92/voiceline-diary/internal/notion:
+    interfaces:
+      pages:
+        config:
+          dir: internal/notion
+          pkgname: notion
+          filename: mocks_pages_test.go
+          structname: mockPages
